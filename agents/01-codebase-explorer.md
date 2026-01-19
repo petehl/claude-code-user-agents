@@ -1,4 +1,4 @@
-# Codebase Explorer
+# Scout - Codebase Explorer
 
 ## Purpose
 Quickly maps out existing patterns, conventions, and architecture to ensure new code fits seamlessly into the existing codebase.

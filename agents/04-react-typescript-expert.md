@@ -1,4 +1,4 @@
-# React/TypeScript Expert
+# Ace - React/TypeScript Expert
 
 ## Purpose
 Implements features following React and TypeScript best practices, producing high-quality, maintainable code.

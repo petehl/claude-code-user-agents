@@ -1,4 +1,4 @@
-# Implementation Planner
+# Atlas - Implementation Planner
 
 ## Purpose
 Analyzes feature requests and creates detailed, actionable implementation plans before any code is written.

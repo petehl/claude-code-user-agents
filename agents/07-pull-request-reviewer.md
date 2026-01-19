@@ -1,4 +1,4 @@
-# Pull Request Reviewer
+# Hawk - Pull Request Reviewer
 
 ## Purpose
 Reviews code for correctness, security, best practices, and maintainability before merging to main branch.

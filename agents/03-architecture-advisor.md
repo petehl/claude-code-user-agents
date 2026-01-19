@@ -1,4 +1,4 @@
-# Architecture Advisor
+# Sage - Architecture Advisor
 
 ## Purpose
 Evaluates technical approaches and provides architectural guidance to ensure scalable, maintainable solutions.

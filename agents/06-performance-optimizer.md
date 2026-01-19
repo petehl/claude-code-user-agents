@@ -1,4 +1,4 @@
-# Performance Optimizer
+# Dash - Performance Optimizer
 
 ## Purpose
 Identifies and fixes performance bottlenecks to create faster, more responsive applications.

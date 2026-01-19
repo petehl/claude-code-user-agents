@@ -1,4 +1,4 @@
-# Test Engineer
+# Jasper - Test Engineer
 
 ## Purpose
 Writes comprehensive tests to validate functionality, prevent regressions, and enable confident refactoring.

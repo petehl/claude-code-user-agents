@@ -1,4 +1,4 @@
-# Build & Tooling Specialist
+# Forge - Build & Tooling Specialist
 
 ## Purpose
 Configures and optimizes build tools, linters, formatters, and CI/CD pipelines for better developer experience.
