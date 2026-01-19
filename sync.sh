@@ -79,6 +79,35 @@ check_conflicts() {
     return $conflicts
 }
 
+# Function to check if sync is needed
+# Returns 0 (success) if changes are needed, 1 (failure) if up to date
+check_sync_needed() {
+    local source_dir="$1"
+    local dest_dir="$2"
+
+    for file in "$source_dir"/*; do
+        [ -e "$file" ] || continue
+        local filename=$(basename "$file")
+        local dest_file="$dest_dir/$filename"
+
+        # Skip hidden files and backups
+        if [[ "$filename" == .* ]] || [[ "$filename" == *~ ]]; then
+            continue
+        fi
+
+        if [ ! -f "$dest_file" ]; then
+            # File doesn't exist in dest - needs sync
+            return 0
+        elif ! cmp -s "$file" "$dest_file"; then
+            # File exists but is different - needs sync
+            return 0
+        fi
+    done
+
+    # No changes needed
+    return 1
+}
+
 # Function to sync files
 sync_files() {
     local source_dir="$1"
@@ -296,17 +325,29 @@ cmd_status() {
     echo ""
 
     echo -e "${BLUE}━━━ Push Status (local → repo) ━━━${NC}"
-    check_conflicts "$CLAUDE_DIR/agents" "$REPO_DIR/agents" && \
-        log_info "Agents: up to date" || log_warning "Agents: changes detected"
-    check_conflicts "$CLAUDE_DIR/skills" "$REPO_DIR/skills" && \
-        log_info "Skills: up to date" || log_warning "Skills: changes detected"
+    if check_sync_needed "$CLAUDE_DIR/agents" "$REPO_DIR/agents"; then
+        log_warning "Agents: changes to push"
+    else
+        log_info "Agents: up to date"
+    fi
+    if check_sync_needed "$CLAUDE_DIR/skills" "$REPO_DIR/skills"; then
+        log_warning "Skills: changes to push"
+    else
+        log_info "Skills: up to date"
+    fi
 
     echo ""
     echo -e "${BLUE}━━━ Pull Status (repo → local) ━━━${NC}"
-    check_conflicts "$REPO_DIR/agents" "$CLAUDE_DIR/agents" && \
-        log_info "Agents: up to date" || log_warning "Agents: changes detected"
-    check_conflicts "$REPO_DIR/skills" "$CLAUDE_DIR/skills" && \
-        log_info "Skills: up to date" || log_warning "Skills: changes detected"
+    if check_sync_needed "$REPO_DIR/agents" "$CLAUDE_DIR/agents"; then
+        log_warning "Agents: changes to pull"
+    else
+        log_info "Agents: up to date"
+    fi
+    if check_sync_needed "$REPO_DIR/skills" "$CLAUDE_DIR/skills"; then
+        log_warning "Skills: changes to pull"
+    else
+        log_info "Skills: up to date"
+    fi
 
     echo ""
     echo -e "${BLUE}━━━ Git Status ━━━${NC}"
@@ -317,8 +358,12 @@ cmd_status() {
     echo -e "${BLUE}━━━ Summary ━━━${NC}"
     local agent_count=$(find "$CLAUDE_DIR/agents" -type f -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
     local skill_count=$(find "$CLAUDE_DIR/skills" -type f -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
+    local repo_agent_count=$(find "$REPO_DIR/agents" -type f -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+    local repo_skill_count=$(find "$REPO_DIR/skills" -mindepth 2 -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
     echo "Local agents: $agent_count"
     echo "Local skills: $skill_count"
+    echo "Repo agents: $repo_agent_count"
+    echo "Repo skills: $repo_skill_count"
 
     if git remote | grep -q origin; then
         echo "Remote: $(git remote get-url origin)"
