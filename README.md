@@ -21,7 +21,7 @@ Personal backup of Claude Code agents and skills.
 ## Setup on New Machine
 
 ```bash
-git clone <your-repo-url> ~/github/claude-user-agents
-cd ~/github/claude-user-agents
+git clone <your-repo-url> ~/git/github/claude-code-user-agents
+cd ~/git/github/claude-code-user-agents
 ./sync.sh pull
 ```
