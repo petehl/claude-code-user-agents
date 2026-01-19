@@ -1,0 +1,12 @@
+# Exclude sensitive files
+.claude.json
+*.local.*
+
+# Exclude OS files
+.DS_Store
+Thumbs.db
+
+# Exclude editor files
+*.swp
+*.swo
+*~
